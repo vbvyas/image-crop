@@ -1,5 +1,30 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  form#upload(method='POST', enctype='multipart/form-data')
+    img.crop(src="http://cdn.geekwire.com/wp-content/uploads/Seattle_Seahawks.jpg")
+    input#src(type='hidden', name='coordinates')
+    input(type='submit', value='Upload')
+  
+  script.
+    var coordinates = null;
+    function showCoords(c) {
+      // variables can be accessed here as
+      // c.x, c.y, c.x2, c.y2, c.w, c.h
+      coordinates = c;
+      console.log(c);
+    };
+    jQuery(function($) {
+      $('#upload').submit(function() {
+        $('input#src').val(coordinates);
+      });
+        
+      $('img.crop').Jcrop({
+        bgColor: 'black',
+        bgOpacity: 0.4,
+        setSelect: [100, 100, 50, 50],
+        aspectRatio: 16 / 9,
+        onSelect: showCoords,
+        onChange: showCoords
+      });
+    });
