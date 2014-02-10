@@ -6,8 +6,6 @@ exports.index = function(req, res){
 
 exports.crop_image = function(req, res){
   console.log(req.body);
-  console.log(req.body['coordinates']);
-  console.log(Object.isString(req.body['coordinates']));
 
   res.redirect('/');
 };
