@@ -7,5 +7,5 @@ exports.index = function(req, res){
 exports.crop_image = function(req, res){
   console.log(req.body);
 
-  res.redirect('/');
+ res.redirect('/');
 };
