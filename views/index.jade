@@ -1,22 +1,19 @@
 extends layout
 
 block content
-  input#files(type="file", name="image")
-
-  br
-  div#uploaded-image
 
   div(style="float: left")
     form#upload(method='POST', enctype='multipart/form-data')
+      img#loaded(src='')
+      br
+      br
+      input#files(type="file", name="image")
       input(type="hidden", name="x1", value="")
       input(type="hidden", name="y1", value="")
       input(type="hidden", name="x2", value="")
       input(type="hidden", name="y2", value="")
       input(type='submit', value='Upload')
   br
-
-  //
-    img.crop(style="height: 400px; width: auto", src="http://cdn.geekwire.com/wp-content/uploads/Seattle_Seahawks.jpg")
 
   br
   div
@@ -44,12 +41,40 @@ block content
 
     jQuery(function($) {
 
+      function triggerCropEvent(){
+        $('img#loaded').imgAreaSelect({
+          aspectRatio: '4:3',
+          maxHeight: 300,
+          minHeight: 300,
+          maxWidth: 400,
+          minWidth: 400,
+          persistent: true,
+          x1: 0,
+          y1: 0,
+          x2: 40,
+          y2: 30,
+          fadeSpeed: 200,
+          resizeable: false,
+          onSelectEnd: function (img, selection) {
+            $('input[name="x1"]').val(selection.x1);
+            $('input[name="y1"]').val(selection.y1);
+            $('input[name="x2"]').val(selection.x2);
+            $('input[name="y2"]').val(selection.y2);            
+          },
+          onSelectChange: function (img, selection) {
+            $('td#x1').text(selection.x1);
+            $('td#y1').text(selection.y1);
+            $('td#x2').text(selection.x2);
+            $('td#y2').text(selection.y2);
+            $('td#width').text(selection.width);
+            $('td#height').text(selection.height);
+          }
+        });
+      }
+
       function createImageTag(theFile) {
         return function(e) {
-          var span = document.createElement('span');
-          span.innerHTML = ['<img class="crop" src="', e.target.result,
-                            '" title="', escape(theFile.name), '"/>'].join('');
-          document.getElementById('uploaded-image').insertBefore(span, null);
+          $('img#loaded').attr("src", e.target.result).load(triggerCropEvent);
         };
       }
 
@@ -72,35 +97,5 @@ block content
       }
 
       $('#files').change(handleFileSelect);
-
-      $('img.crop').imgAreaSelect({
-        aspectRatio: '4:3',
-        maxHeight: 300,
-        minHeight: 300,
-        maxWidth: 400,
-        minWidth: 400,
-        persistent: true,
-        x1: 0,
-        y1: 0,
-        x2: 400,
-        y2: 300,
-        fadeSpeed: 200,
-        resizeable: false,
-        onSelectEnd: function (img, selection) {
-          $('input[name="x1"]').val(selection.x1);
-          $('input[name="y1"]').val(selection.y1);
-          $('input[name="x2"]').val(selection.x2);
-          $('input[name="y2"]').val(selection.y2);            
-        },
-        onSelectChange: function (img, selection) {
-          $('td#x1').text(selection.x1);
-          $('td#y1').text(selection.y1);
-          $('td#x2').text(selection.x2);
-          $('td#y2').text(selection.y2);
-          $('td#width').text(selection.width);
-          $('td#height').text(selection.height);
-        }
-      });
-
 
     });
