@@ -2,102 +2,14 @@ extends layout
 
 block content
 
-  div(style="float: left")
-    form#upload(method='POST', enctype='multipart/form-data')
-      img#loaded(src='')
-      br
-      br
-      input#files(type="file", name="image")
-      input(type="hidden", name="x1", value="")
-      input(type="hidden", name="y1", value="")
-      input(type="hidden", name="x2", value="")
-      input(type="hidden", name="y2", value="")
-      input(type="hidden", name="width", value="")
-      input(type="hidden", name="height", value="")
-      input(type='submit', value='Upload')
-  br
-
-  br
-  div
-    table
-      tr
-        td x1
-        td#x1
-      tr
-        td y1
-        td#y1
-      tr
-        td x2
-        td#x2
-      tr
-        td y2
-        td#y2
-      tr
-        td width
-        td#width
-      tr
-        td height
-        td#height
+  form(method='POST', enctype='multipart/form-data')
+    img#loaded(src='')
+    br
+    input#files(type="file", name="image")
+    input(type="hidden", name="x1", value="")
+    input(type="hidden", name="y1", value="")
+    input(type="hidden", name="width", value="")
+    input(type="hidden", name="height", value="")
+    input(type='submit', value='Upload')
   
-  script.
-
-    jQuery(function($) {
-
-      function triggerCropEvent(){
-        $('img#loaded').imgAreaSelect({
-          aspectRatio: '4:3',
-          maxHeight: 600,
-          minHeight: 600,
-          maxWidth: 800,
-          minWidth: 800,
-          persistent: true,
-          x1: 0,
-          y1: 0,
-          x2: 800,
-          y2: 600,
-          fadeSpeed: 200,
-          resizeable: false,
-          onSelectEnd: function (img, selection) {
-            $('input[name="x1"]').val(selection.x1);
-            $('input[name="y1"]').val(selection.y1);
-            $('input[name="width"]').val(selection.width);            
-            $('input[name="height"]').val(selection.height);            
-          },
-          onSelectChange: function (img, selection) {
-            $('td#x1').text(selection.x1);
-            $('td#y1').text(selection.y1);
-            $('td#x2').text(selection.x2);
-            $('td#y2').text(selection.y2);
-            $('td#width').text(selection.width);
-            $('td#height').text(selection.height);
-          }
-        });
-      }
-
-      function setImageSrc(theFile) {
-        return function(e) {
-          $('img#loaded').attr("src", e.target.result).load(triggerCropEvent);
-        };
-      }
-
-      function handleFileSelect(evt) {
-        var files = evt.target.files; // FileList object
-
-        // for each file
-        for (var i = 0, f; f = files[i]; i++) {
-
-          // Only process image files.
-          if (!f.type.match('image.*')) {
-            continue;
-          }
-
-          var reader = new FileReader();
-          reader.onload = setImageSrc(f);
-          reader.readAsDataURL(f);
-        }
-
-      }
-
-      $('#files').change(handleFileSelect);
-
-    });
+  script(type='text/javascript', src='/js/index.js')

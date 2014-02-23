@@ -8,35 +8,28 @@ exports.index = function(req, res){
 };
 
 exports.crop_image = function(req, res){
-  console.log(req.body);
-
-  console.log("file", req.files.image.name);
-
   fs.readFile(req.files.image.path, function(err, data){
-    var imageName = req.files.image.name;
     var imagePath = req.files.image.path;
+    var imageName = req.files.image.name;
+    var dimension = req.body;
 
-    var x1 = req.body.x1;
-    var y1 = req.body.y1;
-    var width = req.body.width;
-    var height = req.body.height;
-    var cropDimensions = util.format("%sx%s!+%s+%s", width, height, x1, y1);
-    console.log("crop dimensions", cropDimensions);
+    var cropDimensions = util.format("%sx%s!+%s+%s",
+      dimension.width,
+      dimension.height,
+      dimension.x1,
+      dimension.y1
+    );
 
     if(!imageName) {
-      console.log("ERROR");
       res.redirect('/');
     } else {
-
       dstName = Number.random(100, 10000) + ".png";
       var newPath = __dirname + "/uploads/full/" + dstName;
       var cropPath = __dirname + "/uploads/crop/" + dstName;
       var thumbPath = __dirname + "/uploads/thumb/" + dstName;
 
-      console.log("Path:", newPath);
       fs.writeFile(newPath, data, function(err) {
         if (err) {
-          console.log("ERROR:", err);
           res.redirect('/');
         } else {
 
@@ -49,24 +42,15 @@ exports.crop_image = function(req, res){
           ];
 
           im.convert(cropArgs, function(err) {
-            if (err) {
-              console.log("Crop ERROR:", err);
-            } else {
-              console.log("Image crop complete");
 
-              // resize image to 400 x 300
-              im.resize({
-                srcPath: cropPath,
-                dstPath: thumbPath,
-                width: 400
-              }, function (err, stdout, stderr) {
-                if (err) {
-                  console.log("ERROR: resizing image");
-                }
-                console.log("Image resize complete");
-                res.redirect('/uploads/crop/' + dstName);
-              });
-            }
+            // resize image to 400 x 300
+            im.resize({
+              srcPath: cropPath,
+              dstPath: thumbPath,
+              width: 400
+            }, function (err, stdout, stderr) {
+              res.redirect('/uploads/crop/' + dstName);
+            });
           });
         }
       });
