@@ -1,6 +1,7 @@
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
+  , fs = require('fs')
   , path = require('path');
 
 var app = express();
@@ -23,6 +24,14 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.post('/', routes.crop_image);
+
+// to be able to see the images after being saved
+app.get('/uploads/full/:file', function (req, res){
+	file = req.params.file;
+	var img = fs.readFileSync(__dirname + "/routes/uploads/full/" + file);
+	res.writeHead(200, {'Content-Type': 'image/jpg' });
+	res.end(img, 'binary');
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

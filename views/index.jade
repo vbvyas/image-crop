@@ -72,7 +72,7 @@ block content
         });
       }
 
-      function createImageTag(theFile) {
+      function setImageSrc(theFile) {
         return function(e) {
           $('img#loaded').attr("src", e.target.result).load(triggerCropEvent);
         };
@@ -90,7 +90,7 @@ block content
           }
 
           var reader = new FileReader();
-          reader.onload = createImageTag(f);
+          reader.onload = setImageSrc(f);
           reader.readAsDataURL(f);
         }
 
