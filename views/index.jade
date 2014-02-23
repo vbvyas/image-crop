@@ -46,22 +46,20 @@ block content
       function triggerCropEvent(){
         $('img#loaded').imgAreaSelect({
           aspectRatio: '4:3',
-          maxHeight: 300,
-          minHeight: 300,
-          maxWidth: 400,
-          minWidth: 400,
+          maxHeight: 600,
+          minHeight: 600,
+          maxWidth: 800,
+          minWidth: 800,
           persistent: true,
           x1: 0,
           y1: 0,
-          x2: 400,
-          y2: 300,
+          x2: 800,
+          y2: 600,
           fadeSpeed: 200,
           resizeable: false,
           onSelectEnd: function (img, selection) {
             $('input[name="x1"]').val(selection.x1);
             $('input[name="y1"]').val(selection.y1);
-            $('input[name="x2"]').val(selection.x2);
-            $('input[name="y2"]').val(selection.y2);            
             $('input[name="width"]').val(selection.width);            
             $('input[name="height"]').val(selection.height);            
           },
