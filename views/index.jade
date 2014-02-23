@@ -12,6 +12,8 @@ block content
       input(type="hidden", name="y1", value="")
       input(type="hidden", name="x2", value="")
       input(type="hidden", name="y2", value="")
+      input(type="hidden", name="width", value="")
+      input(type="hidden", name="height", value="")
       input(type='submit', value='Upload')
   br
 
@@ -60,6 +62,8 @@ block content
             $('input[name="y1"]').val(selection.y1);
             $('input[name="x2"]').val(selection.x2);
             $('input[name="y2"]').val(selection.y2);            
+            $('input[name="width"]').val(selection.y2);            
+            $('input[name="height"]').val(selection.y2);            
           },
           onSelectChange: function (img, selection) {
             $('td#x1').text(selection.x1);
