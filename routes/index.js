@@ -1,4 +1,4 @@
-require('sugar');
+var fs = require('fs');
 
 exports.index = function(req, res){
   res.render('index', { title: 'image-crop' });
@@ -7,5 +7,8 @@ exports.index = function(req, res){
 exports.crop_image = function(req, res){
   console.log(req.body);
 
- res.redirect('/');
+  console.log("file", req.files.image.name);
+
+
+  res.redirect('/');
 };

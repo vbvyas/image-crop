@@ -1,8 +1,11 @@
 extends layout
 
 block content
-  img.crop(style="height: 400px; width: auto", src="http://cdn.geekwire.com/wp-content/uploads/Seattle_Seahawks.jpg")
+  input#files(type="file", name="image")
+
   br
+  div#uploaded-image
+
   div(style="float: left")
     form#upload(method='POST', enctype='multipart/form-data')
       input(type="hidden", name="x1", value="")
@@ -11,6 +14,10 @@ block content
       input(type="hidden", name="y2", value="")
       input(type='submit', value='Upload')
   br
+
+  //
+    img.crop(style="height: 400px; width: auto", src="http://cdn.geekwire.com/wp-content/uploads/Seattle_Seahawks.jpg")
+
   br
   div
     table
@@ -34,7 +41,38 @@ block content
         td#height
   
   script.
+
     jQuery(function($) {
+
+      function createImageTag(theFile) {
+        return function(e) {
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="crop" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('uploaded-image').insertBefore(span, null);
+        };
+      }
+
+      function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
+
+        // for each file
+        for (var i = 0, f; f = files[i]; i++) {
+
+          // Only process image files.
+          if (!f.type.match('image.*')) {
+            continue;
+          }
+
+          var reader = new FileReader();
+          reader.onload = createImageTag(f);
+          reader.readAsDataURL(f);
+        }
+
+      }
+
+      $('#files').change(handleFileSelect);
+
       $('img.crop').imgAreaSelect({
         aspectRatio: '4:3',
         maxHeight: 300,
@@ -63,4 +101,6 @@ block content
           $('td#height').text(selection.height);
         }
       });
+
+
     });
