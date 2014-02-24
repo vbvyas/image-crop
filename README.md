@@ -19,6 +19,8 @@ For the images to be saved locally on your server, create the following director
   $ md image-crop/routes/uploads/thumb
 ```
 
+Or you can save them straight to S3.
+
 To run:
 
 ```sh
