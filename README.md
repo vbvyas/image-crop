@@ -26,4 +26,4 @@ To run:
   $ node app.js
 ```
 
-Navigate to [localhost:3000](localhost:3000) to upload and crop the image.
+Navigate to [localhost:3000](http://localhost:3000) to upload and crop the image.
