@@ -1,0 +1,8 @@
+extends layout
+
+block content
+
+  h2 Images
+  - each image in images
+      p #{image}
+      img(src='#{image}')
