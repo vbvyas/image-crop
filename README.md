@@ -19,7 +19,7 @@ For the images to be saved locally on your server, create the following director
   $ md image-crop/routes/uploads/thumb
 ```
 
-Or you can save them straight to S3.
+Or you can save them straight to S3. All the cropping and resizing has to be done locally, though.
 
 To run:
 
